@@ -1,0 +1,31 @@
+{
+  "name": "YTLang",
+  "version": "0.0.1",
+  "description": "Watch YouTube and take advantage of free line-by-line translations to 50+ languages.",
+  "manifest_version": 2,
+  "permissions": ["activeTab", "storage", "https://www.youtube.com/*"],
+  "background": {
+    "scripts": ["runtime.js", "background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["runtime.js", "netflix.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    "index.html",
+    "runtime.js",
+    "polyfills.js",
+    "styles.js",
+    "vendor.js",
+    "main.js",
+    "*.js.map",
+    "netflixInterceptor.js"
+  ],
+  "icons": {
+    "128": "assets/icon-128.png"
+  }
+}

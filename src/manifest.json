@@ -1,7 +1,7 @@
 {
-  "name": "YTLang",
+  "name": "Youtube Bilingual Subtitles",
   "version": "0.0.1",
-  "description": "Watch YouTube and take advantage of free line-by-line translations to 50+ languages.",
+  "description": "Watch Youtube and take advantage of free line-by-line translations to 50+ languages.",
   "manifest_version": 2,
   "permissions": ["activeTab", "storage", "https://www.youtube.com/*"],
   "background": {
@@ -11,7 +11,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/*"],
-      "js": ["runtime.js", "netflix.js"],
+      "js": ["runtime.js", "youtube.js"],
       "run_at": "document_end"
     }
   ],
@@ -23,7 +23,7 @@
     "vendor.js",
     "main.js",
     "*.js.map",
-    "netflixInterceptor.js"
+    "youtubeInterceptor.js"
   ],
   "icons": {
     "128": "assets/icon-128.png"

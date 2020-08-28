@@ -1,7 +1,7 @@
 module.exports = {
   entry: {
     background: 'src/scripts/background.ts',
-    netflix: 'src/scripts/netflix.ts',
-    netflixInterceptor: 'src/scripts/netflix-interceptor.ts',
+    youtube: 'src/scripts/youtube.ts',
+    youtubeInterceptor: 'src/scripts/youtube-interceptor.ts',
   },
 };

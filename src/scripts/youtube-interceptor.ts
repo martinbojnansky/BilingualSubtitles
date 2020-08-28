@@ -2,7 +2,7 @@
 
 import { trySafe, sendDocumentMessage } from './shared/extension-helpers';
 import { ITimedTextEvent } from 'src/shared/interfaces';
-import { SubtitlesParserService } from './netflix/subtitles-parser.service';
+import { SubtitlesParserService } from './youtube/subtitles-parser.service';
 import { Action } from 'src/shared/actions';
 
 // Loaded TTML document is parsed and saved to the state.

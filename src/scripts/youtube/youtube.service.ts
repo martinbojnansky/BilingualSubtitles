@@ -2,19 +2,19 @@ import { ISubtitles, ISubtitle } from 'src/shared/interfaces';
 import { MutationObserverService } from '../shared/mutation-observer.service';
 import { Store } from '../shared/store';
 
-export interface INetflixServiceState {
+export interface IYoutubeServiceState {
   subtitles: ISubtitles;
 }
 
-export abstract class INetflixService extends MutationObserverService {
+export abstract class IYoutubeService extends MutationObserverService {
   abstract setSubtitles(subtitles: ISubtitles): void;
 }
 
-export class NetflixService extends INetflixService {
+export class YoutubeService extends IYoutubeService {
   // #region properties-definition
 
   // Gets object that contains single source of thruth (state).
-  protected readonly store = new Store<INetflixServiceState>({});
+  protected readonly store = new Store<IYoutubeServiceState>({});
 
   // Gets or sets <style> element used to modify current visual styles.
   protected style: HTMLStyleElement;
@@ -48,7 +48,7 @@ export class NetflixService extends INetflixService {
   // or translates current if a translation is missing (can happen on seek).
   protected onSubtitleDisplayed(key: string): void {
     try {
-      const subtitle = this.store.state.subtitles[key.trim().replace('\n', '')];
+      const subtitle = this.store.state.subtitles[key.trim()];
       this.showSubtitleTranslation(subtitle);
     } catch {}
   }
@@ -77,12 +77,15 @@ export class NetflixService extends INetflixService {
   protected updateSubtitlesStyle(subtitle: ISubtitle): void {
     // Displays source language subtitles line by line (as pseudo-elements) and differentiate with color.
     let css = `
+      .caption-window {
+        width: auto !important;
+      }
+    
       .caption-visual-line .ytp-caption-segment::before {
         display: block;
         color: yellow;
       }
     `;
-
     // Add style for each line.
     subtitle.sLangLines.forEach((line, index) => {
       css += this.getSubtitleSourceStyle(index + 1, line);
@@ -96,7 +99,7 @@ export class NetflixService extends INetflixService {
   protected getSubtitleSourceStyle(index: number, content: string): string {
     return `
       .caption-visual-line .ytp-caption-segment:nth-child(${index})::before {
-        content: '${content.replace("'", "\\'")}';
+        content: '${content.replace("'", "\\'").replace('\n', ' ')}';
       }`;
   }
 

@@ -30,7 +30,7 @@
               "src/assets",
               "src/manifest.json",
               "src/assets/require.js",
-              "src/assets/netflix.js",
+              "src/assets/youtube.js",
               "src/assets/inject.js"
             ],
             "styles": ["src/styles/main.scss"],

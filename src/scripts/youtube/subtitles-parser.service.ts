@@ -5,7 +5,7 @@ export class SubtitlesParserService {
     sEvents: ITimedTextEvent[],
     tEvents: ITimedTextEvent[]
   ): ISubtitles {
-    // TODO: Check and throw errors if length of the subtitles are not the same.
+    // TODO: Check and throw errors if lengths of the subtitles are not the same.
     const subtitles: ISubtitles = {};
 
     for (let i = 0; i < sEvents?.length; i++) {
@@ -14,8 +14,7 @@ export class SubtitlesParserService {
       const key = tEvent.segs
         .map((s) => s.utf8)
         .join('')
-        .trim()
-        .replace('\n', '');
+        .trim();
       subtitles[key] = {
         key: key,
         startMs: tEvent.tStartMs,

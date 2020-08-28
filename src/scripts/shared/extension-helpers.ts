@@ -76,6 +76,7 @@ export const onDocumentMessage = <T>(
   });
 };
 
+// Evaluates lambda expression with try/catch block and returns fallback value.
 export function trySafe<T>(fce: () => T, failResult: T = null): T {
   try {
     const result = fce();
@@ -83,4 +84,10 @@ export function trySafe<T>(fce: () => T, failResult: T = null): T {
   } catch {
     return failResult;
   }
+}
+
+// Creates key out of the provided text in order to match
+// values even if they are somehow displayed with trailing characters
+export function textToKey(value: string): string {
+  return value.trim();
 }

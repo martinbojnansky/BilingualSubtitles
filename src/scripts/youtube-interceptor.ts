@@ -2,7 +2,10 @@
 
 import { trySafe, sendDocumentMessage } from './shared/extension-helpers';
 import { ITimedTextEvent } from 'src/shared/interfaces';
-import { SubtitlesParserService } from './youtube/subtitles-parser.service';
+import {
+  ISubtitlesParserService,
+  SubtitlesParserService2,
+} from './youtube/subtitles-parser.service';
 import { Action } from 'src/shared/actions';
 
 // Loaded TTML document is parsed and saved to the state.
@@ -33,10 +36,9 @@ const interceptHttpCalls = (): void => {
           const tLangEvents = JSON.parse(this.responseText)
             ?.events as ITimedTextEvent[];
           // Parse subtitles dictionary object.
-          const subtitles = new SubtitlesParserService().parse(
-            sLangEvents,
-            tLangEvents
-          );
+          const subtitles = (<ISubtitlesParserService>(
+            new SubtitlesParserService2()
+          )).parse(sLangEvents, tLangEvents);
           // Emit event with the parsed subtitles.
           sendDocumentMessage(Action.subtitlesParsed, subtitles);
         })

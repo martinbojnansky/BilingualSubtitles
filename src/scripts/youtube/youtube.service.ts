@@ -50,7 +50,9 @@ export class YoutubeService extends IYoutubeService {
     try {
       const subtitle = this.store.state.subtitles[key.trim()];
       this.showSubtitleTranslation(subtitle);
-    } catch {}
+    } catch {
+      this.clearSubtitlesStyle();
+    }
   }
 
   // Shows subtitle translation by updating CSS style.
@@ -101,6 +103,12 @@ export class YoutubeService extends IYoutubeService {
       .caption-visual-line .ytp-caption-segment:nth-child(${index})::before {
         content: '${content.replace("'", "\\'").replace('\n', ' ')}';
       }`;
+  }
+
+  // Clears content of <style> element that modifies CSS styles
+  // of displayed subtitles.
+  protected clearSubtitlesStyle(): void {
+    this.style.innerHTML = '';
   }
 
   //#endregion

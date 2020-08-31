@@ -1,8 +1,10 @@
 import { ISubtitles, ITimedTextEvent } from 'src/shared/interfaces';
-import { trySafe } from '../shared/extension-helpers';
 
-export interface ISubtitlesParserService {
-  parse(sEvents: ITimedTextEvent[], tEvents: ITimedTextEvent[]): ISubtitles;
+export abstract class ISubtitlesParserService {
+  abstract parse(
+    sEvents: ITimedTextEvent[],
+    tEvents: ITimedTextEvent[]
+  ): ISubtitles;
 }
 
 // Basic subtitles parser which relies on the same count of the events.
@@ -42,47 +44,35 @@ export class SubtitlesParserService2 implements ISubtitlesParserService {
     tEvents: ITimedTextEvent[]
   ): ISubtitles {
     const subtitles: ISubtitles = {};
-
     // Itterates target language events which usually groups
     // multiple auto-generated subtitles.
-    for (let i = 0; i < sEvents?.length; i++) {
+    for (let i = 0; i < tEvents?.length; i++) {
+      // Get current and next target events
       const tEvent = tEvents[i];
-      const tNextEvent = trySafe(() => tEvents[i + 1]);
+      const tNextEvent = tEvents[i + 1];
+      // Find start and end index of source events
+      // in order to match target event with multiple source events.
       const sEventsGroupStartIndex = sEvents.findIndex(
-        (e) => e.tStartMs === tEvent?.tStartMs
+        (e) => e.tStartMs === tEvent.tStartMs
       );
-      const sEventsGroupEndIndex = sEvents.findIndex(
+      let sEventsGroupEndIndex = sEvents.findIndex(
         (e) => e.tStartMs === tNextEvent?.tStartMs
       );
+      sEventsGroupEndIndex =
+        sEventsGroupEndIndex === -1 ? sEvents.length : sEventsGroupEndIndex;
 
       const sEvent: ITimedTextEvent = {
         tStartMs: tEvent?.tStartMs,
         dDurationMs: tEvent?.dDurationMs,
         segs: [{ utf8: '' }],
       };
-      for (
-        let j = sEventsGroupStartIndex;
-        j <
-        (sEventsGroupEndIndex !== -1
-          ? sEventsGroupEndIndex
-          : sEvents.length - 1);
-        j++
-      ) {
-        sEvent.segs[0].utf8 += sEvents[j].segs
-          .map((s) => s.utf8)
-          .join(' ')
-          .replace('\n', ' ');
+      for (let j = sEventsGroupStartIndex; j < sEventsGroupEndIndex; j++) {
+        sEvent.segs[0].utf8 += sEvents[j]?.segs
+          .map((s) => s.utf8.replace(/ +?/, '').replace('\n', ' '))
+          .join(' ');
       }
-
-      console.log(
-        sEventsGroupStartIndex,
-        sEventsGroupEndIndex,
-        sEvent,
-        tEvent,
-        tNextEvent
-      );
-
-      const key = tEvent.segs
+      // Set subtitle based on target event key.
+      const key = tEvent?.segs
         .map((s) => s.utf8)
         .join('')
         .trim();
@@ -90,8 +80,8 @@ export class SubtitlesParserService2 implements ISubtitlesParserService {
         key: key,
         startMs: tEvent.tStartMs,
         durationMs: tEvent.dDurationMs,
-        sLangLines: sEvent.segs.map((s) => s.utf8),
-        tLangLines: tEvent.segs.map((s) => s.utf8),
+        sLangLines: sEvent.segs.map((s) => s.utf8.trim()),
+        tLangLines: tEvent.segs?.map((s) => s.utf8),
       };
     }
 

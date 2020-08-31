@@ -21,6 +21,7 @@ export interface ITimedTextEvent {
   tStartMs: number;
   dDurationMs: number;
   segs: { utf8: string }[];
+  wpWinPosId?: number;
 }
 
 export interface ITimedTextResponse {

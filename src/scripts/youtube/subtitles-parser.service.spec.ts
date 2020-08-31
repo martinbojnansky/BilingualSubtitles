@@ -1,17 +1,131 @@
 import { TestBed } from '@angular/core/testing';
 import {
-  SubtitlesParserService2,
+  CCSubtitlesParserService,
   ISubtitlesParserService,
+  SubtitlesParserService,
 } from './subtitles-parser.service';
 import { ITimedTextEvent } from 'src/shared/interfaces';
 
-describe('SubtitlesParserService2', () => {
+describe('SubtitlesParserService', () => {
   let service: ISubtitlesParserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: ISubtitlesParserService, useClass: SubtitlesParserService2 },
+        {
+          provide: ISubtitlesParserService,
+          useClass: SubtitlesParserService,
+        },
+      ],
+    });
+    service = TestBed.inject(ISubtitlesParserService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+
+  it('should parse auto-generated cc subtitles', () => {
+    // Subtitles from https://www.youtube.com/watch?v=e-Oyu0oKcXY
+    const sEvents: ITimedTextEvent[] = [
+      {
+        tStartMs: 7880,
+        dDurationMs: 5200,
+        segs: [
+          {
+            utf8:
+              'Der Nebel kommt. Es sieht so aus,\nals ob wir uns beeilen müssten.',
+          },
+        ],
+      },
+      {
+        tStartMs: 14640,
+        dDurationMs: 2000,
+        segs: [
+          {
+            utf8: 'Es ist nicht so schlimm.',
+          },
+        ],
+      },
+      {
+        tStartMs: 16880,
+        dDurationMs: 3160,
+        segs: [
+          {
+            utf8: '5.30 Uhr auf der Basis\nder Air Zermatt.',
+          },
+        ],
+      },
+    ];
+    const tEvents: ITimedTextEvent[] = [
+      {
+        tStartMs: 7880,
+        dDurationMs: 5200,
+        segs: [
+          {
+            utf8: ' The fog is coming. It looks like we have to hurry. ',
+          },
+        ],
+      },
+      {
+        tStartMs: 14640,
+        dDurationMs: 2000,
+        segs: [
+          {
+            utf8: ' It is not so bad. ',
+          },
+        ],
+      },
+      {
+        tStartMs: 16880,
+        dDurationMs: 3160,
+        segs: [
+          {
+            utf8: ' 5.30 a.m. on the basis of Air Zermatt. ',
+          },
+        ],
+      },
+    ];
+
+    const subtitles = service.parse(sEvents, tEvents);
+    expect(subtitles).toEqual({
+      'The fog is coming. It looks like we have to hurry.': {
+        key: 'The fog is coming. It looks like we have to hurry.',
+        startMs: 7880,
+        durationMs: 5200,
+        sLangLines: [
+          'Der Nebel kommt. Es sieht so aus, als ob wir uns beeilen müssten.',
+        ],
+        tLangLines: [' The fog is coming. It looks like we have to hurry. '],
+      },
+      'It is not so bad.': {
+        key: 'It is not so bad.',
+        startMs: 14640,
+        durationMs: 2000,
+        sLangLines: ['Es ist nicht so schlimm.'],
+        tLangLines: [' It is not so bad. '],
+      },
+      '5.30 a.m. on the basis of Air Zermatt.': {
+        key: '5.30 a.m. on the basis of Air Zermatt.',
+        startMs: 16880,
+        durationMs: 3160,
+        sLangLines: ['5.30 Uhr auf der Basis der Air Zermatt.'],
+        tLangLines: [' 5.30 a.m. on the basis of Air Zermatt. '],
+      },
+    });
+  });
+});
+
+describe('CCSubtitlesParserService', () => {
+  let service: ISubtitlesParserService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: ISubtitlesParserService,
+          useClass: CCSubtitlesParserService,
+        },
       ],
     });
     service = TestBed.inject(ISubtitlesParserService);

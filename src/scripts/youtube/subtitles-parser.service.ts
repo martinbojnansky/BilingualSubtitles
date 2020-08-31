@@ -8,7 +8,7 @@ export abstract class ISubtitlesParserService {
 }
 
 // Basic subtitles parser which relies on the same count of the events.
-export class SubtitlesParserService1 implements ISubtitlesParserService {
+export class SubtitlesParserService implements ISubtitlesParserService {
   public parse(
     sEvents: ITimedTextEvent[],
     tEvents: ITimedTextEvent[]
@@ -27,7 +27,7 @@ export class SubtitlesParserService1 implements ISubtitlesParserService {
         key: key,
         startMs: tEvent.tStartMs,
         durationMs: tEvent.dDurationMs,
-        sLangLines: sEvent.segs.map((s) => s.utf8),
+        sLangLines: sEvent.segs.map((s) => s.utf8.replace('\n', ' ')),
         tLangLines: tEvent.segs.map((s) => s.utf8),
       };
     }
@@ -38,7 +38,7 @@ export class SubtitlesParserService1 implements ISubtitlesParserService {
 
 // Improved subtitles parses which does not rely on the same count of the events
 // and supports auto-generated subtitles.
-export class SubtitlesParserService2 implements ISubtitlesParserService {
+export class CCSubtitlesParserService implements ISubtitlesParserService {
   public parse(
     sEvents: ITimedTextEvent[],
     tEvents: ITimedTextEvent[]

@@ -4,6 +4,7 @@ import { Store } from '../shared/store';
 
 export interface IYoutubeServiceState {
   subtitles: ISubtitles;
+  baseStyle: string;
 }
 
 export abstract class IYoutubeService extends MutationObserverService {
@@ -71,23 +72,54 @@ export class YoutubeService extends IYoutubeService {
       this.style = document.createElement('style');
       this.style.type = 'text/css';
       document.head.insertAdjacentElement('beforeend', this.style);
+
+      let baseStyle = `
+        .caption-window {
+          width: auto !important;
+        }
+      
+        .caption-visual-line .ytp-caption-segment::before {
+          display: block;
+          color: yellow;
+        }
+      `;
+      baseStyle += this.getTranscriptStyle(this.store.state.subtitles);
+
+      this.store.patch({ baseStyle: baseStyle });
     }
+  }
+
+  // Gets CSS style for transcript list.
+  protected getTranscriptStyle(subtitles: ISubtitles): string {
+    let transcriptStyle = `
+      .cue.style-scope.ytd-transcript-body-renderer {
+      }
+    `;
+
+    Object.keys(subtitles).forEach((key) => {
+      const subtitle = subtitles[key];
+      transcriptStyle += `
+      .cue.style-scope.ytd-transcript-body-renderer[start-offset="${
+        subtitle.startMs
+      }"]::after {
+        display: block;
+        content: '${subtitle.tLangLines
+          .join(' ')
+          .replace("'", "\\'")
+          .replace('\n', ' ')}';
+        opacity: 0.8;
+      }
+      `;
+    });
+
+    return transcriptStyle;
   }
 
   // Updates content of <style> element that modifies CSS styles
   // of displayed subtitles.
   protected updateSubtitlesStyle(subtitle: ISubtitle): void {
     // Displays source language subtitles line by line (as pseudo-elements) and differentiate with color.
-    let css = `
-      .caption-window {
-        width: auto !important;
-      }
-    
-      .caption-visual-line .ytp-caption-segment::before {
-        display: block;
-        color: yellow;
-      }
-    `;
+    let css = this.store.state.baseStyle;
     // Add style for each line.
     subtitle.sLangLines.forEach((line, index) => {
       css += this.getSubtitleSourceStyle(index + 1, line);

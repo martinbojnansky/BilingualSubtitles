@@ -20,15 +20,15 @@ export class SubtitlesParserService implements ISubtitlesParserService {
       const sEvent = sEvents[i];
       const tEvent = tEvents[i];
       const key = tEvent.segs
-        .map((s) => s.utf8)
-        .join('')
-        .trim();
+        ?.map((s) => s.utf8)
+        ?.join('')
+        ?.trim();
       subtitles[key] = {
         key: key,
-        startMs: tEvent.tStartMs,
-        durationMs: tEvent.dDurationMs,
-        sLangLines: sEvent.segs.map((s) => s.utf8.replace('\n', ' ')),
-        tLangLines: tEvent.segs.map((s) => s.utf8),
+        startMs: tEvent?.tStartMs,
+        durationMs: tEvent?.dDurationMs,
+        sLangLines: sEvent?.segs?.map((s) => s.utf8.replace('\n', ' ')),
+        tLangLines: tEvent?.segs?.map((s) => s.utf8),
       };
     }
 
@@ -68,19 +68,19 @@ export class CCSubtitlesParserService implements ISubtitlesParserService {
       };
       for (let j = sEventsGroupStartIndex; j < sEventsGroupEndIndex; j++) {
         sEvent.segs[0].utf8 += sEvents[j]?.segs
-          .map((s) => s.utf8.replace(/ +?/, '').replace('\n', ' '))
-          .join(' ');
+          ?.map((s) => s.utf8.replace(/ +?/, '')?.replace('\n', ' '))
+          ?.join(' ');
       }
       // Set subtitle based on target event key.
       const key = tEvent?.segs
-        .map((s) => s.utf8)
-        .join('')
-        .trim();
+        ?.map((s) => s.utf8)
+        ?.join('')
+        ?.trim();
       subtitles[key] = {
         key: key,
         startMs: tEvent.tStartMs,
         durationMs: tEvent.dDurationMs,
-        sLangLines: sEvent.segs.map((s) => s.utf8.trim()),
+        sLangLines: sEvent.segs?.map((s) => s.utf8.trim()),
         tLangLines: tEvent.segs?.map((s) => s.utf8),
       };
     }

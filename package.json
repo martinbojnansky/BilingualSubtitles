@@ -1,5 +1,5 @@
 {
-  "name": "youtube-bilingual-subtitles",
+  "name": "bilingual-subtitles",
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",

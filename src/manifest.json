@@ -1,20 +1,21 @@
 {
-  "name": "Youtube Bilingual Subtitles",
+  "name": "Bilingual Subtitles",
   "version": "0.0.1",
-  "description": "Watch Youtube and take advantage of free line-by-line translations to 50+ languages.",
+  "description": "Watch YouTub* and learn language with bilingual subtitles.",
   "manifest_version": 2,
-  "permissions": ["activeTab", "storage", "https://www.youtube.com/*"],
+  "permissions": [
+    "declarativeContent",
+    "activeTab",
+    "storage",
+    "https://www.youtube.com/*"
+  ],
   "background": {
     "scripts": ["runtime.js", "background.js"],
     "persistent": false
   },
-  "content_scripts": [
-    {
-      "matches": ["https://www.youtube.com/*"],
-      "js": ["runtime.js", "youtube.js"],
-      "run_at": "document_end"
-    }
-  ],
+  "browser_action": {
+    "default_popup": "index.html"
+  },
   "web_accessible_resources": [
     "index.html",
     "runtime.js",

@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { MaterialModule } from './material.module';
 import { CommonModule } from '@angular/common';
-import { IconsModule } from './icons.module';
 
 @NgModule({
-  imports: [CommonModule, MaterialModule, IconsModule],
+  imports: [CommonModule, MaterialModule],
   declarations: [],
-  exports: [MaterialModule, IconsModule],
+  exports: [MaterialModule],
 })
 export class ComponentsModule {}

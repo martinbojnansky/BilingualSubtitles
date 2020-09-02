@@ -1,0 +1,80 @@
+@import './global';
+@import '~@angular/material/theming';
+
+// Core styles
+@include mat-core();
+
+// Theme
+$mat-colors-red: (
+  50: #ffebee,
+  100: #ffcdd2,
+  200: #ef9a9a,
+  300: #e57373,
+  400: #ef5350,
+  500: $color-accent,
+  600: #e53935,
+  700: #d32f2f,
+  800: #c62828,
+  900: #b71c1c,
+  A100: #ff8a80,
+  A200: #ff5252,
+  A400: #ff1744,
+  A700: #d50000,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  ),
+);
+
+$mat-palette-primary: mat-palette($mat-colors-red);
+$mat-palette-accent: mat-palette($mat-colors-red, A200, A100, A400);
+$mat-theme: mat-light-theme($mat-palette-primary, $mat-palette-accent);
+
+// Component styles
+@include mat-core-theme($mat-theme);
+// @include mat-autocomplete-theme($mat-theme);
+// @include mat-badge-theme($mat-theme);
+// @include mat-bottom-sheet-theme($mat-theme);
+@include mat-button-theme($mat-theme);
+// @include mat-button-toggle-theme($mat-theme);
+@include mat-card-theme($mat-theme);
+// @include mat-checkbox-theme($mat-theme);
+// @include mat-chips-theme($mat-theme);
+// @include mat-table-theme($mat-theme);
+// @include mat-datepicker-theme($mat-theme);
+// @include mat-dialog-theme($mat-theme);
+// @include mat-divider-theme($mat-theme);
+// @include mat-expansion-panel-theme($mat-theme);
+// @include mat-form-field-theme($mat-theme);
+// @include mat-grid-list-theme($mat-theme);
+@include mat-icon-theme($mat-theme);
+// @include mat-input-theme($mat-theme);
+// @include mat-list-theme($mat-theme);
+// @include mat-menu-theme($mat-theme);
+// @include mat-paginator-theme($mat-theme);
+// @include mat-progress-bar-theme($mat-theme);
+// @include mat-progress-spinner-theme($mat-theme);
+// @include mat-radio-theme($mat-theme);
+// @include mat-select-theme($mat-theme);
+// @include mat-sidenav-theme($mat-theme);
+// @include mat-slide-toggle-theme($mat-theme);
+// @include mat-slider-theme($mat-theme);
+// @include mat-stepper-theme($mat-theme);
+// @include mat-sort-theme($mat-theme);
+// @include mat-tabs-theme($mat-theme);
+// @include mat-toolbar-theme($mat-theme);
+// @include mat-tooltip-theme($mat-theme);
+// @include mat-tree-theme($mat-theme);
+// @include mat-snack-bar-theme($mat-theme);

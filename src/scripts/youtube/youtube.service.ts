@@ -76,6 +76,11 @@ export class YoutubeService extends IYoutubeService {
 
     // If new subtitles were loaded, new base style has to be generated.
     this.updateSubtitlesBaseStyle();
+    // Try to display translation of currently displayed subtitle,
+    // because observer will update only if there is a modification.
+    this.onSubtitleDisplayed(
+      document.querySelector('.caption-window')?.textContent
+    );
   }
 
   // Updates state of base style which changes only with change

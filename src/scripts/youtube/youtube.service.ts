@@ -72,8 +72,18 @@ export class YoutubeService extends IYoutubeService {
       this.style = document.createElement('style');
       this.style.type = 'text/css';
       document.head.insertAdjacentElement('beforeend', this.style);
+    }
 
-      let baseStyle = `
+    // If new subtitles were loaded, new base style has to be generated.
+    this.updateSubtitlesBaseStyle();
+  }
+
+  // Updates state of base style which changes only with change
+  // of language or video.
+  protected updateSubtitlesBaseStyle(): void {
+    this.store.patch({
+      baseStyle:
+        `
         .caption-window {
           width: auto !important;
         }
@@ -82,17 +92,16 @@ export class YoutubeService extends IYoutubeService {
           display: block;
           color: yellow;
         }
-      `;
-      baseStyle += this.getTranscriptStyle(this.store.state.subtitles);
-
-      this.store.patch({ baseStyle: baseStyle });
-    }
+    ` + this.getTranscriptStyle(this.store.state.subtitles),
+    });
   }
 
   // Gets CSS style for transcript list.
   protected getTranscriptStyle(subtitles: ISubtitles): string {
     let transcriptStyle = `
-      .cue.style-scope.ytd-transcript-body-renderer {
+      .cue.style-scope.ytd-transcript-body-renderer::after {
+        display: block;
+        opacity: 0.8;
       }
     `;
 
@@ -102,12 +111,10 @@ export class YoutubeService extends IYoutubeService {
       .cue.style-scope.ytd-transcript-body-renderer[start-offset="${
         subtitle.startMs
       }"]::after {
-        display: block;
         content: '${subtitle.tLangLines
           .join(' ')
           .replace("'", "\\'")
           .replace('\n', ' ')}';
-        opacity: 0.8;
       }
       `;
     });

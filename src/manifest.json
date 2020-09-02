@@ -13,9 +13,6 @@
     "scripts": ["runtime.js", "background.js"],
     "persistent": false
   },
-  "browser_action": {
-    "default_popup": "index.html"
-  },
   "web_accessible_resources": [
     "index.html",
     "runtime.js",
@@ -25,6 +22,16 @@
     "main.js",
     "*.js.map",
     "youtubeInterceptor.js"
+  ],
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["runtime.js", "youtube.js"],
+      "run_at": "document_end"
+    }
   ],
   "icons": {
     "128": "assets/icon-128.png"

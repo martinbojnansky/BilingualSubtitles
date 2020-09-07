@@ -79,7 +79,8 @@ export class YoutubeService extends IYoutubeService {
     // Try to display translation of currently displayed subtitle,
     // because observer will update only if there is a modification.
     this.onSubtitleDisplayed(
-      document.querySelector('.caption-window')?.textContent
+      document.querySelector('.caption-window.ytp-caption-window-bottom')
+        ?.textContent
     );
   }
 

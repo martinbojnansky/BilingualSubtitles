@@ -1,14 +1,9 @@
 {
   "name": "Bilingual Subtitles",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Watch YouTub* and learn language with bilingual subtitles.",
   "manifest_version": 2,
-  "permissions": [
-    "declarativeContent",
-    "activeTab",
-    "storage",
-    "https://www.youtube.com/*"
-  ],
+  "permissions": ["https://www.youtube.com/*"],
   "background": {
     "scripts": ["runtime.js", "background.js"],
     "persistent": false
